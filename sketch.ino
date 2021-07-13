@@ -16,7 +16,8 @@ const int LED_BUILTIN = 2;
 const int GRINDER_PIN = 33;
 const int pregrind_time_in_ms = 200;
 
-int dispense_time_in_ms = 5000;
+int dispense_single_time_in_ms = 5000;
+int dispense_double_time_in_ms = 10000;
 String state = "Ready";
 String sdata = "";
 
@@ -51,10 +52,16 @@ void loop() {
             getCommand();
             break;
          case 's':
-            setCommand(sdata);
+            setCommand("single",sdata);
+            break;
+         case 'x':
+            setCommand("double",sdata);
             break;
           case 'd':
-            dispenseCommand();
+            dispenseSingleCommand();
+            break;
+          case 'z':
+            dispenseDoubleCommand();
             break;
          default: Serial.println(sdata);
          } 
@@ -67,24 +74,42 @@ void loop() {
 void getCommand() {
   Serial.print(state);
   Serial.print("_");
-  Serial.println(dispense_time_in_ms);
+  Serial.print(dispense_single_time_in_ms);
+  Serial.print("_");
+  Serial.println(dispense_double_time_in_ms);
   SerialBT.print(state);
   SerialBT.print("_");
-  SerialBT.println(dispense_time_in_ms);
+  SerialBT.print(dispense_single_time_in_ms);
+  SerialBT.print("_");
+  SerialBT.println(dispense_double_time_in_ms);
 }
 
-void setCommand(String sdata) {
+void setCommand(String type, String sdata) {
    if (sdata.length()>1){
-     String valStr = sdata.substring(1);
-     dispense_time_in_ms = valStr.toInt();
+     if (type == "single"){
+      String valStr = sdata.substring(1);
+      dispense_single_time_in_ms = valStr.toInt();
+      Serial.print("Set single: ");
+      Serial.println(dispense_single_time_in_ms);  
+    }
+    else if (type == "double"){
+      String valStr = sdata.substring(1);
+      dispense_double_time_in_ms = valStr.toInt();
+      Serial.print("Set double: ");
+      Serial.println(dispense_double_time_in_ms);  
+    }
   }
-  Serial.print("Set: ");
-  Serial.println(dispense_time_in_ms);
 }
 
-void dispenseCommand() {
-  grindForDuration(dispense_time_in_ms);
+void dispenseSingleCommand() {
+  grindForDuration(dispense_single_time_in_ms);
 }
+
+void dispenseDoubleCommand() {
+  logMessage("Double");
+  grindForDuration(dispense_double_time_in_ms);
+}
+
 
 void grindForDuration(int duration) {
   grind();
@@ -114,7 +139,7 @@ void stopGrind() {
 
 void grinderHandler() {
   delay(pregrind_time_in_ms);
-  grindForDuration(dispense_time_in_ms);
+  grindForDuration(dispense_single_time_in_ms);
 }
 
 void longPressGrinderHandler(){
