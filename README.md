@@ -7,6 +7,7 @@ This particular code is written having in mind that I own a manual coffee grinde
 
 ## Dependencies
 
+- [Setup esp32 board on Arduino IDE](https://circuitdigest.com/microcontroller-projects/programming-esp32-with-arduino-ide)
 - [BluetoothSerial](https://github.com/espressif/arduino-esp32/tree/master/libraries/BluetoothSerial)
 - [OneButton](https://github.com/mathertel/OneButton)
 
