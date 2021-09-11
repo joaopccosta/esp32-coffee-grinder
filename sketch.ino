@@ -14,7 +14,12 @@
 const String MODULE_NAME="Coffee Grinder";
 const int LED_BUILTIN = 2;
 const int GRINDER_PIN = 33;
-const int pregrind_time_in_ms = 200;
+const int PREGRIND_TIME_IN_MS = 200;
+const char GET_COMMAND = 'g';
+const char SET_DISPENSE_SINGLE_TIME_COMMAND = 's';
+const char SET_DISPENSE_DOUBLE_TIME_COMMAND = 'x';
+const char DISPENSE_SINGLE_COMMAND = 'd';
+const char DISPENSE_DOUBLE_COMMAND = 'z';
 
 int dispense_single_time_in_ms = 5000;
 int dispense_double_time_in_ms = 10000;
@@ -49,19 +54,19 @@ void loop() {
 
          // Process command in sdata.
          switch( sdata.charAt(0) ) {
-         case 'g':
+         case GET_COMMAND:
             getCommand();
             break;
-         case 's':
+         case SET_DISPENSE_SINGLE_TIME_COMMAND:
             setCommand("single",sdata);
             break;
-         case 'x':
+         case SET_DISPENSE_DOUBLE_TIME_COMMAND:
             setCommand("double",sdata);
             break;
-          case 'd':
+          case DISPENSE_SINGLE_COMMAND:
             dispenseSingleCommand();
             break;
-          case 'z':
+          case DISPENSE_DOUBLE_COMMAND:
             dispenseDoubleCommand();
             break;
          default: Serial.println(sdata);
@@ -139,12 +144,12 @@ void stopGrind() {
 }
 
 void grinderHandler() {
-  delay(pregrind_time_in_ms);
+  delay(PREGRIND_TIME_IN_MS);
   grindForDuration(dispense_single_time_in_ms);
 }
 
 void grinderDoubleHandler() {
-    delay(pregrind_time_in_ms);
+    delay(PREGRIND_TIME_IN_MS);
     grindForDuration(dispense_double_time_in_ms);
 }
 
