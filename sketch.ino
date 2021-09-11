@@ -29,6 +29,7 @@ void setup() {
   pinMode (GRINDER_PIN, OUTPUT);
 
   grinderButton.attachClick(grinderHandler);
+  grinderButton.attachDoubleClick(grinderDoubleHandler);
   grinderButton.attachDuringLongPress(longPressGrinderHandler);
   grinderButton.attachLongPressStop(longPressGrinderStopHandler);
   
@@ -140,6 +141,11 @@ void stopGrind() {
 void grinderHandler() {
   delay(pregrind_time_in_ms);
   grindForDuration(dispense_single_time_in_ms);
+}
+
+void grinderDoubleHandler() {
+    delay(pregrind_time_in_ms);
+    grindForDuration(dispense_double_time_in_ms);
 }
 
 void longPressGrinderHandler(){
